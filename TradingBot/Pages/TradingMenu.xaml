@@ -9,6 +9,8 @@
       Title="TradingMenu">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            
+        </Grid.ColumnDefinitions>
     </Grid>
 </Page>
