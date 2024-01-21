@@ -91,7 +91,7 @@ namespace TradingBot.Pages
             try
             {
                 loadLists();
-                FromDp.SelectedDate = DateTime.Now.AddYears(-1);
+                FromDp.SelectedDate = DateTime.Now.AddMonths(-6);
                 ToDp.SelectedDate = DateTime.Now.AddDays(-1);
                 ToDp.DisplayDateEnd = DateTime.Now.AddDays(-1);
 
