@@ -15,6 +15,9 @@ using System.Windows.Shapes;
 using static TradingBot.Classes.Helper;
 using YahooFinanceApi;
 using TradingBot.Models;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.Defaults;
 
 namespace TradingBot.Pages
 {
@@ -55,6 +58,24 @@ namespace TradingBot.Pages
                 {
                     var history = await Yahoo.GetHistoricalAsync(Selected.ShortName, FromDp.SelectedDate.Value.Date, ToDp.SelectedDate.Value.Date, Period.Daily);
                     ItemsDg.ItemsSource = history.ToList();
+
+
+                    MainChart.Series = new ISeries[]
+                    {
+                        new CandlesticksSeries<FinancialPointI>
+                        {
+                            Values = history.Select(el => new FinancialPointI(Convert.ToDouble(el.High), Convert.ToDouble(el.Open), Convert.ToDouble(el.Close), Convert.ToDouble(el.Low))).ToArray()
+                        }
+                    };
+                    MainChart.XAxes = new[]
+                    {
+                        new Axis
+                        {
+                            LabelsRotation = -45,
+                            Labels = history.Select(el => el.DateTime.Date.ToString("d")).ToArray()
+                        }
+                    };
+                    
                 }
                 
             }
@@ -70,7 +91,7 @@ namespace TradingBot.Pages
             try
             {
                 loadLists();
-                FromDp.SelectedDate = DateTime.Now.AddDays(-30);
+                FromDp.SelectedDate = DateTime.Now.AddYears(-1);
                 ToDp.SelectedDate = DateTime.Now.AddDays(-1);
                 ToDp.DisplayDateEnd = DateTime.Now.AddDays(-1);
 
