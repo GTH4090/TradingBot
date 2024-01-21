@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TradingBot"
         mc:Ignorable="d"
-        Title="TradingBot" Height="450" Width="800" MinHeight="450" MinWidth="800">
+        Title="TradingBot" Height="720" Width="1080" MinHeight="450" MinWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

@@ -13,31 +13,90 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
         <TabControl>
             <TabItem Header="График">
                 
             </TabItem>
             <TabItem Header="Таблица">
-                <DataGrid AutoGenerateColumns="True" Name="ItemsDg"/>
+                <DataGrid AutoGenerateColumns="True" Name="ItemsDg" IsReadOnly="True"/>
             </TabItem>
         </TabControl>
 
-        <TabControl Grid.Column="1">
+        <TabControl Grid.Column="1" Grid.RowSpan="2" x:Name="ListsTC">
             <TabItem Header="Все">
                 <ScrollViewer>
                     <StackPanel Orientation="Vertical">
                         <Label Content="Акции"/>
-                        <ListView x:Name="StocksLv">
+                        <ListView x:Name="StocksLv" SelectionChanged="StocksLv_SelectionChanged" SelectionMode="Single">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid>
+                                    <Grid HorizontalAlignment="Stretch" Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{Binding ShortName}" FontSize="14" Width="Auto"/>
-                                        <Label Content="{Binding LastCost}" FontSize="11" Width="Auto"/>
+                                        <ScrollViewer Grid.Column="1" HorizontalAlignment="Right" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                            <Label Content="{Binding FullName}" FontSize="11" Width="Auto"/>
+
+                                        </ScrollViewer>
+                                        <Label Content="{Binding LastCost}" FontSize="11" Width="Auto" Grid.Column="2"/>
+                                        <CheckBox IsChecked="{Binding Favorite,Mode=OneWay}" Checked="CheckBox_Checked" Grid.Column="3" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Right"/>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Label Content="Курсы валют"/>
+                        <ListView x:Name="ExchangeRatesLv" SelectionChanged="ExchangeRatesLv_SelectionChanged" SelectionMode="Single">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding ShortName}" FontSize="14" Width="Auto"/>
+                                        <ScrollViewer Grid.Column="1" HorizontalAlignment="Right" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                            <Label Content="{Binding FullName}" FontSize="11" Width="Auto"/>
+
+                                        </ScrollViewer>
+                                        <Label Content="{Binding LastCost}" FontSize="11" Width="Auto" Grid.Column="2"/>
+                                        <CheckBox IsChecked="{Binding Favorite,Mode=OneWay}" Checked="CheckBox_Checked" Grid.Column="3" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Right"/>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <Label Content="Курсы криптовалют" Width="Auto"/>
+                        <ListView x:Name="CryptocurrencyRatesLv" SelectionChanged="CryptocurrencyRatesLv_SelectionChanged" SelectionMode="Single">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding ShortName}" FontSize="14" Width="Auto"/>
+                                        <ScrollViewer Grid.Column="1" HorizontalAlignment="Right" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                            <Label Content="{Binding FullName}" FontSize="11" Width="Auto"/>
+
+                                        </ScrollViewer>
+                                        <Label Content="{Binding LastCost}" FontSize="11" Width="Auto" Grid.Column="2"/>
+                                        <CheckBox IsChecked="{Binding Favorite,Mode=OneWay}" Checked="CheckBox_Checked" Grid.Column="3" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Right"/>
+                                        
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -47,7 +106,46 @@
                 
                 
             </TabItem>
-            <TabItem Header="Избранные"/>
+            <TabItem Header="Избранные">
+                <ScrollViewer>
+                    <ListView x:Name="FavoritesLv" SelectionChanged="FavoritesLv_SelectionChanged" SelectionMode="Single">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Stretch" Width="200">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="{Binding ShortName}" FontSize="14" Width="Auto"/>
+                                    <ScrollViewer Grid.Column="1" HorizontalAlignment="Right" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <Label Content="{Binding FullName}" FontSize="11" Width="Auto"/>
+
+                                    </ScrollViewer>
+                                    <Label Content="{Binding LastCost}" FontSize="11" Width="Auto" Grid.Column="2"/>
+                                    <CheckBox IsChecked="{Binding Favorite,Mode=OneWay}"  Checked="CheckBox_Checked" Grid.Column="3" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Right"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+                
+            </TabItem>
         </TabControl>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="С:" Width="30"/>
+            <DatePicker Grid.Column="1" x:Name="FromDp" Width="120" SelectedDateChanged="FromDp_SelectedDateChanged"/>
+            <Label Content="По:" Width="30" Grid.Column="2"/>
+            <DatePicker Grid.Column="3" Width="120" x:Name="ToDp" SelectedDateChanged="ToDp_SelectedDateChanged"/>
+        </Grid>
     </Grid>
 </Page>
