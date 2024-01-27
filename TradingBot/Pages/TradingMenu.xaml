@@ -157,5 +157,6 @@
             <Label Content="По:" Width="30" Grid.Column="2"/>
             <DatePicker Grid.Column="3" Width="120" x:Name="ToDp" SelectedDateChanged="ToDp_SelectedDateChanged"/>
         </Grid>
+        <Button x:Name="Analysis" Content="Технический анализ" Grid.Row="1" HorizontalAlignment="Right" Click="Analysis_Click"/>
     </Grid>
 </Page>

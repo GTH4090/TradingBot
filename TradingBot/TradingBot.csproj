@@ -15,6 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.5" />
+    <PackageReference Include="TALib.NETCore" Version="0.4.4" />
     <PackageReference Include="YahooFinanceApi" Version="2.3.1" />
   </ItemGroup>
 

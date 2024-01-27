@@ -18,6 +18,8 @@ using TradingBot.Models;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.Defaults;
+using TALib;
+  
 
 namespace TradingBot.Pages
 {
@@ -28,6 +30,9 @@ namespace TradingBot.Pages
     {
         bool canStart = false;
         Models.Item Selected = null;
+
+        IReadOnlyList<Candle> History = null;
+       
         public TradingMenu()
         {
             InitializeComponent();
@@ -57,6 +62,7 @@ namespace TradingBot.Pages
                 if (canStart && Selected != null)
                 {
                     var history = await Yahoo.GetHistoricalAsync(Selected.ShortName, FromDp.SelectedDate.Value.Date, ToDp.SelectedDate.Value.Date, Period.Daily);
+                    History = history;
                     ItemsDg.ItemsSource = history.ToList();
 
 
@@ -201,6 +207,38 @@ namespace TradingBot.Pages
                 StocksLv.SelectedItem = null;
                 ExchangeRatesLv.SelectedItem = null;
                 loadDataAsync();
+            }
+        }
+
+        private void Analysis_Click(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                 if(History != null)
+                {
+                    var diValues = new decimal[History.Count];
+
+                    var highs = History.Select(el => el.High).ToArray();
+                    var lows = History.Select(el => el.Low).ToArray();
+                    var closes = History.Select(el => el.Close).ToArray();
+
+                    var result = TALib.Core.MinusDI(highs, lows, closes, 0, History.Count - 1, diValues, out int outBegIdx, out int outNbElement, 14);
+
+                    if(result == TALib.Core.RetCode.Success)
+                    {
+                        Info("Успешно, можно покупать");
+                    }
+                    else
+                    {
+                        Info("Неудачно, не покупайте");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Error(ex.Message);
             }
         }
     }
