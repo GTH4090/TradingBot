@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TradingBot.Classes.Helper;
 
 namespace TradingBot.Models
 {
@@ -12,9 +13,17 @@ namespace TradingBot.Models
         {
             get
             {
-                if (IsFav == 1)
+                
+                if(logined != null)
                 {
-                    return true;
+                    if(Db.UserFavs.Where(el => el.ClientId == logined.Id).FirstOrDefault(el => el.ItemId == this.Id) != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {

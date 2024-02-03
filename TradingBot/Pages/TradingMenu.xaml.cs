@@ -47,7 +47,8 @@ namespace TradingBot.Pages
                 ExchangeRatesLv.ItemsSource = Db.Items.Where(el => el.TypeId == 2).ToList();
                 CryptocurrencyRatesLv.ItemsSource = Db.Items.Where(El => El.TypeId == 3).ToList();
 
-                FavoritesLv.ItemsSource = Db.Items.Where(el => el.IsFav == 1).ToList();
+                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFav.ClientId == logined.Id).ToList();
+                
             }
             catch (Exception ex)
             {
@@ -130,9 +131,15 @@ namespace TradingBot.Pages
 
             try
             {
-                (((sender as CheckBox).Parent as Grid).DataContext as Models.Item).IsFav = 1;
+                UserFav fav = new UserFav();
+                fav.ClientId = logined.Id;
+
+                fav.ItemId = (((sender as CheckBox).Parent as Grid).DataContext as Models.Item).Id;
+                Db.UserFavs.Add(fav);
                 Db.SaveChanges();
-                FavoritesLv.ItemsSource = Db.Items.Where(el => el.IsFav == 1).ToList();
+                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFav.ClientId == logined.Id).ToList();
+
+
 
             }
             catch (Exception ex)
@@ -146,10 +153,12 @@ namespace TradingBot.Pages
 
             try
             {
-                (((sender as CheckBox).Parent as Grid).DataContext as Models.Item).IsFav = 0;
+                var it = Db.UserFavs.FirstOrDefault( el => el.ClientId == logined.Id && el.ItemId == (((sender as CheckBox).Parent as Grid).DataContext as Models.Item).Id);
+                Db.UserFavs.Remove(it);
                 Db.SaveChanges();
-                FavoritesLv.ItemsSource = Db.Items.Where(el => el.IsFav == 1).ToList();
-                if(ListsTC.SelectedIndex == 1)
+                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFav.ClientId == logined.Id).ToList();
+
+                if (ListsTC.SelectedIndex == 1)
                 {
                     loadLists();
                 }
@@ -222,16 +231,35 @@ namespace TradingBot.Pages
                     var highs = History.Select(el => el.High).ToArray();
                     var lows = History.Select(el => el.Low).ToArray();
                     var closes = History.Select(el => el.Close).ToArray();
+                    int outBegIdx;
 
-                    var result = TALib.Core.MinusDI(highs, lows, closes, 0, History.Count - 1, diValues, out int outBegIdx, out int outNbElement, 14);
+                    int outNbElement;
 
-                    if(result == TALib.Core.RetCode.Success)
+                    var result = TALib.Core.Rsi(closes, 0, History.Count - 1, diValues, out outBegIdx, out outNbElement, 14);
+
+
+                    
+                    var value = diValues.Last();
+                    int lastInd = History.Count - 1;
+                    while(value == 0)
                     {
-                        Info("Успешно, можно покупать");
+                        lastInd--;
+                        value = diValues[lastInd];
+                    }
+
+
+                    if (value > 70)
+                    {
+                        Info("Тренд возрастёт");
+                    }
+                    else if(value < 30)
+                    {
+                        Info("Тренд будет падать");
                     }
                     else
                     {
-                        Info("Неудачно, не покупайте");
+                        Info("Тренд сохранится");
+
                     }
 
                 }

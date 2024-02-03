@@ -63,6 +63,7 @@ namespace TradingBot.Pages
             {
                 if(Db.Clients.FirstOrDefault(el => el.Login == LoginTbx.Text && el.Password == PasswordPbx.Password) != null)
                 {
+                    logined = Db.Clients.FirstOrDefault(el => el.Login == LoginTbx.Text && el.Password == PasswordPbx.Password);
                     NavigationService.Navigate(new TradingMenu());
                 }
                 else

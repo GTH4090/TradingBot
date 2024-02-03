@@ -35,7 +35,7 @@
                 <ScrollViewer>
                     
                     <StackPanel Orientation="Vertical">
-                        <Expander Header="Акции" Width="200">
+                        <Expander Header="Акции" Width="220">
                             <ListView x:Name="StocksLv" SelectionChanged="StocksLv_SelectionChanged" SelectionMode="Single">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -59,7 +59,7 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                         </Expander>
-                        <Expander Header="Курсы валют">
+                        <Expander Header="Курсы валют" Width="220">
                             <ListView x:Name="ExchangeRatesLv" SelectionChanged="ExchangeRatesLv_SelectionChanged" SelectionMode="Single">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -84,7 +84,7 @@
                             </ListView>
                         </Expander>
 
-                        <Expander Header="Курсы криптовалют">
+                        <Expander Header="Курсы криптовалют" Width="220">
                             <ListView x:Name="CryptocurrencyRatesLv" SelectionChanged="CryptocurrencyRatesLv_SelectionChanged" SelectionMode="Single">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>

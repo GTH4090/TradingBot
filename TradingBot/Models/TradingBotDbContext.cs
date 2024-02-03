@@ -21,6 +21,8 @@ public partial class TradingBotDbContext : DbContext
 
     public virtual DbSet<Type> Types { get; set; }
 
+    public virtual DbSet<UserFav> UserFavs { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlite("Data Source=E:\\HACKERMAN\\Repos\\TradingBot\\TradingBot\\Database\\TradingBotDb.db");
@@ -52,6 +54,21 @@ public partial class TradingBotDbContext : DbContext
             entity.ToTable("Type");
 
             entity.HasIndex(e => e.Id, "IX_Type_Id").IsUnique();
+        });
+
+        modelBuilder.Entity<UserFav>(entity =>
+        {
+            entity.HasIndex(e => e.Id, "IX_UserFavs_Id").IsUnique();
+
+            entity.HasIndex(e => e.ItemId, "IX_UserFavs_ItemId").IsUnique();
+
+            entity.HasOne(d => d.Client).WithMany(p => p.UserFavs)
+                .HasForeignKey(d => d.ClientId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Item).WithOne(p => p.UserFav)
+                .HasForeignKey<UserFav>(d => d.ItemId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         OnModelCreatingPartial(modelBuilder);

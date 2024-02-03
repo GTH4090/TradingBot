@@ -13,6 +13,8 @@ namespace TradingBot.Classes
     {
         public static TradingBotDbContext Db = new TradingBotDbContext();
 
+        public static Client logined = null;
+
         public static void Error(string message = "Ошибка БД")
         {
             MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);

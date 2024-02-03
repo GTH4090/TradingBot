@@ -10,4 +10,6 @@ public partial class Client
     public string Login { get; set; } = null!;
 
     public string Password { get; set; } = null!;
+
+    public virtual ICollection<UserFav> UserFavs { get; set; } = new List<UserFav>();
 }
