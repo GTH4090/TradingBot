@@ -62,6 +62,9 @@ namespace TradingBot.Pages
             {
                 if (canStart && Selected != null)
                 {
+                    SecondChart.Series = null;
+                    SecondChart.XAxes = null;
+                    SecondChart.Height = 0;
                     var history = await Yahoo.GetHistoricalAsync(Selected.ShortName, FromDp.SelectedDate.Value.Date, ToDp.SelectedDate.Value.Date, Period.Daily);
                     History = history;
                     ItemsDg.ItemsSource = history.ToList();
@@ -261,6 +264,25 @@ namespace TradingBot.Pages
                         Info("Тренд сохранится");
 
                     }
+
+                    SecondChart.Series = new ISeries[]
+                    {
+                       
+                        new LineSeries<decimal>
+                        {
+                            Values = diValues
+                        }
+                    };
+                    SecondChart.XAxes = new[]
+                    {
+                        new Axis
+                        {
+                            LabelsRotation = -45,
+                            Labels = History.Select(el => el.DateTime.Date.ToString("d")).ToArray()
+                        }
+                    };
+                    SecondChart.Height = 200;
+
 
                 }
             }

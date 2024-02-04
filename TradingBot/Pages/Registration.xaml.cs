@@ -13,15 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static TradingBot.Classes.Helper;
+using TradingBot.Models;
 
 namespace TradingBot.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для Auth.xaml
+    /// Логика взаимодействия для Registration.xaml
     /// </summary>
-    public partial class Auth : Page
+    public partial class Registration : Page
     {
-        public Auth()
+        public Registration()
         {
             InitializeComponent();
         }
@@ -56,20 +57,21 @@ namespace TradingBot.Pages
 
         }
 
-        private void LoginBtn_Click(object sender, RoutedEventArgs e)
+        private void RegBtn_Click(object sender, RoutedEventArgs e)
         {
 
             try
             {
-                if(Db.Clients.FirstOrDefault(el => el.Login == LoginTbx.Text && el.Password == PasswordPbx.Password) != null)
+                if(Password2Pbx.Password == PasswordPbx.Password)
                 {
-                    logined = Db.Clients.FirstOrDefault(el => el.Login == LoginTbx.Text && el.Password == PasswordPbx.Password);
-                    NavigationService.Navigate(new TradingMenu());
+                    Client client = new Client();
+                    client.Login = LoginTbx.Text;
+                    client.Password = PasswordPbx.Password;
+                    Db.Clients.Add(client);
+                    Db.SaveChanges();
+                    NavigationService.GoBack();
                 }
-                else
-                {
-                    Info("Неправильынй логин или пароль");
-                }
+               
             }
             catch (Exception ex)
             {
@@ -77,9 +79,34 @@ namespace TradingBot.Pages
             }
         }
 
-        private void RegBtn_Click(object sender, RoutedEventArgs e)
+        private void Password2Tbx_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NavigationService.Navigate(new Registration());
+            if (Password2Pbx.Password != Password2Tbx.Text)
+            {
+                Password2Pbx.Password = Password2Tbx.Text;
+            }
+        }
+
+        private void Password2Pbx_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (Password2Pbx.Password != Password2Tbx.Text)
+            {
+                Password2Tbx.Text = Password2Pbx.Password;
+            }
+        }
+
+        private void Password2Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (Password2Tbx.Visibility == Visibility.Collapsed)
+            {
+                Password2Tbx.Visibility = Visibility.Visible;
+                Password2Pbx.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Password2Pbx.Visibility = Visibility.Visible;
+                Password2Tbx.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

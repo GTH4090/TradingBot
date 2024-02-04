@@ -14,16 +14,27 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TabControl>
             <TabItem Header="График">
-                <lvc:CartesianChart x:Name="MainChart"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <lvc:CartesianChart x:Name="MainChart" Grid.Row="0" Width="Auto" Height="Auto"/>
+                    <lvc:CartesianChart x:Name="SecondChart" Grid.Row="1"/>
+                </Grid>
+
+
             </TabItem>
             <TabItem Header="Таблица">
                 <DataGrid AutoGenerateColumns="True" Name="ItemsDg" IsReadOnly="True"/>

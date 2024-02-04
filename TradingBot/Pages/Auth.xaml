@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -30,5 +31,7 @@
         </StackPanel>
 
         <Button x:Name="LoginBtn" Content="Авторизоваться" Click="LoginBtn_Click" Grid.Row="2" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Button x:Name="RegBtn" Content="Регистрация" Click="RegBtn_Click" Grid.Row="3" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+
     </Grid>
 </Page>
