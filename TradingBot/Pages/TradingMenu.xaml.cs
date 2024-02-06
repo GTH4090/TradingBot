@@ -253,11 +253,11 @@ namespace TradingBot.Pages
 
                     if (value > 70)
                     {
-                        Info("Тренд возрастёт");
+                        Info("Тренд изменится на понижении");
                     }
                     else if(value < 30)
                     {
-                        Info("Тренд будет падать");
+                        Info("Тренд изменится на повышение");
                     }
                     else
                     {
