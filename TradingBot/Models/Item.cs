@@ -17,5 +17,5 @@ public partial class Item
 
     public virtual Type Type { get; set; } = null!;
 
-    public virtual UserFav? UserFav { get; set; }
+    public virtual ICollection<UserFav> UserFavs { get; set; } = new List<UserFav>();
 }

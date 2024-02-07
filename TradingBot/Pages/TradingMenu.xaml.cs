@@ -47,7 +47,7 @@ namespace TradingBot.Pages
                 ExchangeRatesLv.ItemsSource = Db.Items.Where(el => el.TypeId == 2).ToList();
                 CryptocurrencyRatesLv.ItemsSource = Db.Items.Where(El => El.TypeId == 3).ToList();
 
-                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFav.ClientId == logined.Id).ToList();
+                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFavs.FirstOrDefault(e => e.ClientId == logined.Id) != null).ToList();
                 
             }
             catch (Exception ex)
@@ -140,8 +140,8 @@ namespace TradingBot.Pages
                 fav.ItemId = (((sender as CheckBox).Parent as Grid).DataContext as Models.Item).Id;
                 Db.UserFavs.Add(fav);
                 Db.SaveChanges();
-                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFav.ClientId == logined.Id).ToList();
-
+                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFavs.FirstOrDefault(e => e.ClientId == logined.Id) != null).ToList();
+                loadLists();
 
 
             }
@@ -159,12 +159,11 @@ namespace TradingBot.Pages
                 var it = Db.UserFavs.FirstOrDefault( el => el.ClientId == logined.Id && el.ItemId == (((sender as CheckBox).Parent as Grid).DataContext as Models.Item).Id);
                 Db.UserFavs.Remove(it);
                 Db.SaveChanges();
-                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFav.ClientId == logined.Id).ToList();
+                FavoritesLv.ItemsSource = Db.Items.Where(el => el.UserFavs.FirstOrDefault(e => e.ClientId == logined.Id) != null).ToList();
 
-                if (ListsTC.SelectedIndex == 1)
-                {
+                
                     loadLists();
-                }
+                
                 
             }
             catch (Exception ex)
