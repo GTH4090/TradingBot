@@ -79,7 +79,7 @@ namespace TradingBot.Pages
             }
             catch (Exception ex)
             {
-                Error(ex.Message);
+                Error("Логин занят");
             }
         }
 
