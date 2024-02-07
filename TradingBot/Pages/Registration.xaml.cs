@@ -71,6 +71,10 @@ namespace TradingBot.Pages
                     Db.SaveChanges();
                     NavigationService.GoBack();
                 }
+                else
+                {
+                    Info("Пароли не совпадают");
+                }
                
             }
             catch (Exception ex)
